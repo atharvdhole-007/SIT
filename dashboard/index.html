@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FeedSentinel</title>
+<meta name="description" content="FeedSentinel: know which market-data feed to trust, in real time">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body data-page="login">
+<div id="conn-banner" class="conn-banner" role="status" hidden>
+  <span class="conn-dot" aria-hidden="true"></span>
+  <span id="conn-text">Reconnecting…</span>
+</div>
+
+<header class="topnav">
+  <a class="logo" href="/login">FeedSentinel</a>
+  <span id="view-name" class="view-name"></span>
+  <div class="spacer"></div>
+  <span id="conn-pill" class="conn-pill" data-state="connecting" title="Connecting…"><i aria-hidden="true"></i><span id="conn-label">connecting</span></span>
+  <div id="user-chip" class="user-chip" hidden>
+    <span id="user-name" class="user-name"></span>
+    <span id="user-meta" class="user-meta"></span>
+  </div>
+  <button id="chat-toggle" class="btn btn-secondary" type="button" aria-controls="chat" aria-expanded="false" hidden>Ask FeedSentinel</button>
+  <button id="signout" class="btn btn-text" type="button" hidden>Sign out</button>
+</header>
+
+<!-- ================================================================== LOGIN -->
+<div id="page-login" class="page page-login" hidden>
+  <div class="login-grid">
+    <div class="login-hero">
+      <div class="eyebrow">Market-data integrity · Nasdaq TotalView-ITCH</div>
+      <h1 class="hero-h">Know which feed to trust.</h1>
+      <p class="body-lg">FeedSentinel watches every copy of your market data in real time. It flags feeds that are garbled,
+        delayed, duplicated or frozen, explains why in plain language, and tells you which source to use instead.</p>
+      <ul class="hero-points">
+        <li><b>About a second</b><span>to detect a frozen or gapped feed</span></li>
+        <li><b>Root cause</b><span>with evidence, not just an alarm</span></li>
+        <li><b>Role-aware</b><span>ops, trader and admin views</span></li>
+      </ul>
+    </div>
+    <form id="login-form" class="card login-card" novalidate>
+      <h2 class="card-h">Sign in</h2>
+      <p class="muted m0">Use your FeedSentinel account.</p>
+      <label class="field"><span>Username</span><input id="login-user" name="username" autocomplete="username" placeholder="e.g. ops_us" required></label>
+      <label class="field"><span>Password</span><input id="login-pass" name="password" type="password" autocomplete="current-password" placeholder="Password" required></label>
+      <div id="login-err" class="form-msg" role="alert" hidden></div>
+      <button id="login-submit" class="btn btn-primary btn-block" type="submit">Sign in</button>
+      <div class="demo">
+        <span class="demo-lbl">Demo accounts · password <code>demo123</code></span>
+        <div class="demo-chips">
+          <button type="button" class="chip-btn demo-chip" data-user="ops_us">ops_us</button>
+          <button type="button" class="chip-btn demo-chip" data-user="trader_us">trader_us</button>
+          <button type="button" class="chip-btn demo-chip" data-user="trader_eu">trader_eu</button>
+          <button type="button" class="chip-btn demo-chip" data-user="admin">admin</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ================================================================== OPS -->
+<div id="page-ops" class="page page-ops" hidden>
+  <section class="band" aria-label="Market status">
+    <div class="band-inner">
+      <div class="band-meta">
+        <span id="mode-badge" class="badge badge-mode">REPLAY</span>
+        <span id="source" class="source">connecting…</span>
+        <span id="speed-badge" class="badge badge-quiet num" title="Replay speed: market seconds per wall second"></span>
+        <span id="paused-badge" class="badge badge-paused" hidden><span aria-hidden="true">❚❚</span> PAUSED</span>
+      </div>
+      <div class="band-stats">
+        <div class="stat"><div id="clock" class="stat-num num">--:--:--</div><div class="stat-lbl">Market time · <span id="clock-tz"></span></div></div>
+        <div class="stat"><div id="session" class="stat-num">—</div><div class="stat-lbl">Session · <span id="clock-date">—</span></div></div>
+        <div class="stat"><div id="st-healthy" class="stat-num num">–</div><div class="stat-lbl">Feeds healthy</div></div>
+        <div class="stat"><div id="st-open" class="stat-num num">–</div><div class="stat-lbl">Open incidents</div></div>
+        <div class="stat"><div id="st-eps" class="stat-num num">–</div><div class="stat-lbl">Detector events / s</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="controlbar">
+    <label class="ctl">Speed
+      <select id="speed-select" aria-label="Replay speed"></select>
+    </label>
+    <button id="pause-btn" class="btn btn-secondary" type="button">Pause</button>
+    <button id="demo-btn" class="btn btn-secondary" type="button" aria-pressed="false">Demo autopilot</button>
+    <div class="seg" role="group" aria-label="Data mode" hidden>
+      <button type="button" class="seg-btn" data-mode="replay" aria-pressed="true">Replay</button>
+      <button type="button" class="seg-btn" data-mode="live" aria-pressed="false">Live</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="tabs" role="tablist" aria-label="Views">
+      <button type="button" role="tab" class="tab" id="tabbtn-monitor" data-tab="monitor" aria-selected="true" aria-controls="tab-monitor">Monitor</button>
+      <button type="button" role="tab" class="tab" id="tabbtn-eval" data-tab="eval" aria-selected="false" aria-controls="tab-eval" tabindex="-1">Evaluation</button>
+      <button type="button" role="tab" class="tab" id="tabbtn-about" data-tab="about" aria-selected="false" aria-controls="tab-about" tabindex="-1">About</button>
+      <button type="button" role="tab" class="tab" id="tabbtn-audit" data-tab="audit" aria-selected="false" aria-controls="tab-audit" tabindex="-1" hidden>Audit</button>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- ------------------------------------------------ MONITOR -->
+    <section id="tab-monitor" class="view view-monitor" role="tabpanel" aria-labelledby="tabbtn-monitor">
+      <div id="feed-cards" class="feed-cards" aria-label="Feeds"></div>
+
+      <div class="reco" aria-label="Recommended source per symbol">
+        <span class="reco-label">Recommended source</span>
+        <div id="reco-list" class="reco-list"></div>
+      </div>
+
+      <section class="panel chart-panel" aria-labelledby="chart-title">
+        <div class="panel-head">
+          <h2 id="chart-title">Price</h2>
+          <label class="ctl ctl-sm"><span class="sr-only">Symbol</span>
+            <select id="symbol-select" aria-label="Chart symbol"></select>
+          </label>
+          <div id="chart-legend" class="legend" aria-label="Legend"></div>
+          <div class="spacer"></div>
+          <span id="chart-note" class="chart-note"></span>
+          <button id="chart-table-toggle" class="btn btn-secondary btn-sm" type="button" aria-pressed="false">Table view</button>
+        </div>
+        <div id="chart-wrap" class="chart-wrap">
+          <canvas id="price-chart" role="img" aria-label="Price chart: consensus and per-feed prices with incident markers"></canvas>
+          <div id="chart-empty" class="chart-empty" hidden>Waiting for price data…</div>
+        </div>
+        <div id="chart-table" class="chart-table" hidden></div>
+      </section>
+
+      <div class="lower">
+        <section class="panel incidents-panel" aria-labelledby="inc-title">
+          <div class="panel-head">
+            <h2 id="inc-title">Incidents</h2>
+            <span id="inc-counts" class="panel-sub num"></span>
+            <div class="spacer"></div>
+            <span class="panel-hint">Select for “Why?”</span>
+          </div>
+          <div id="incident-list" class="incident-list"></div>
+          <div id="incident-empty" class="empty">No incidents. All feeds look healthy.</div>
+        </section>
+
+        <section class="panel timeline-panel" aria-labelledby="tl-title">
+          <div class="panel-head">
+            <h2 id="tl-title">Incident timeline</h2>
+            <span id="tl-count" class="panel-sub num"></span>
+          </div>
+          <ol id="tl-list" class="tl-list"></ol>
+          <div id="tl-empty" class="empty">No events yet.</div>
+        </section>
+
+        <section class="panel chaos-panel" aria-labelledby="chaos-title">
+          <div class="panel-head">
+            <h2 id="chaos-title">Chaos Lab</h2>
+            <label class="ctl ctl-sm">Target
+              <select id="chaos-feed" aria-label="Target feed"></select>
+            </label>
+            <label class="ctl ctl-sm">Symbols
+              <select id="chaos-symbols" aria-label="Target symbols"></select>
+            </label>
+          </div>
+          <div class="chaos-body">
+            <div id="scenario-groups" class="scenario-groups"></div>
+            <div id="stopwatch" class="stopwatch" data-state="idle" aria-live="polite">
+              <div class="sw-label">Detection stopwatch</div>
+              <div id="sw-value" class="sw-value num">—</div>
+              <div id="sw-sub" class="sw-sub">Inject a fault to time its detection</div>
+              <button id="sw-inc" class="btn btn-secondary btn-sm sw-inc" type="button" hidden></button>
+              <div class="sw-foot">in market (feed) seconds</div>
+            </div>
+          </div>
+          <div class="chaos-active">
+            <span class="chaos-active-label">Active faults</span>
+            <div id="active-faults" class="chips"><span class="muted">none</span></div>
+            <div class="spacer"></div>
+            <button id="chaos-clear" class="btn btn-secondary btn-sm" type="button">Clear all</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------ EVALUATION -->
+    <section id="tab-eval" class="view view-doc" role="tabpanel" aria-labelledby="tabbtn-eval" hidden>
+      <div class="doc-head">
+        <h1 class="section-h">Evaluation</h1>
+        <span id="eval-meta" class="panel-sub"></span>
+        <div class="spacer"></div>
+        <button id="eval-refresh" class="btn btn-secondary" type="button">Refresh</button>
+      </div>
+      <div id="eval-body" class="eval-body"><p class="muted">Loading…</p></div>
+    </section>
+
+    <!-- ------------------------------------------------ ABOUT -->
+    <section id="tab-about" class="view view-doc" role="tabpanel" aria-labelledby="tabbtn-about" hidden>
+      <div class="doc-head"><h1 class="section-h">How FeedSentinel works</h1></div>
+      <p class="lede">FeedSentinel watches several copies of the same market data arriving over different paths and flags any
+        feed that looks garbled, delayed, duplicated, frozen or otherwise broken, in real time, with a plain-language
+        explanation and a recommended action.</p>
+      <div class="about-grid">
+        <section class="card about-layers">
+          <h2 class="card-h">Eight layers, cheapest first</h2>
+          <ol class="layers">
+            <li><span class="layer-id">L0</span><div><b>Market context</b>: session calendar, system events and trading halts, so a quiet or halted market is never mistaken for a dead feed.</div></li>
+            <li><span class="layer-id">L1</span><div><b>Gatekeeper</b>: every message is checked against the schema and sanity rules (price scale, tick size, crossed book, test symbols). Bad messages are quarantined, not silently dropped.</div></li>
+            <li><span class="layer-id">L2</span><div><b>Sequence &amp; timing</b>: MoldUDP64-style sequence tracking for gaps, duplicates, out-of-order delivery and resets; heartbeats for disconnects; latency and clock skew per feed.</div></li>
+            <li><span class="layer-id">L3</span><div><b>Feature windows</b>: rolling per-feed windows of message rates, latencies, price-change and divergence statistics.</div></li>
+            <li><span class="layer-id">L4</span><div><b>AI</b>: an Isolation Forest scores how unusual each window is against learned normal behaviour, and a fault classifier names the most likely fault.</div></li>
+            <li><span class="layer-id">L5</span><div><b>Trust-weighted consensus</b>: feeds are compared as-of exchange time, so a feed that is alive but wrong (frozen, stale, drifting, spiking, decimal-shifted) stands out against its peers.</div></li>
+            <li><span class="layer-id">L6</span><div><b>Health &amp; state machine</b>: a 0–100 health score and HEALTHY / DEGRADED / CRITICAL state per feed. Escalation follows a corroboration rule, so a single weak signal on its own does not raise an alarm.</div></li>
+            <li><span class="layer-id">L7</span><div><b>Incidents &amp; explanation</b>: one incident per root cause with a runbook action and root-cause analysis, plus an explanation grounded only in the measured evidence (LLM-written when enabled, template otherwise).</div></li>
+          </ol>
+        </section>
+        <section class="card about-truth">
+          <h2 class="card-h">What is real, simulated and roadmap</h2>
+          <table class="table truth-table">
+            <thead><tr><th scope="col">Status</th><th scope="col">What</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><span class="truth truth-real">Real</span></th>
+                <td>Nasdaq-derived order-book data (LOBSTER sample of Nasdaq TotalView-ITCH), the Nasdaq Symbol Directory, every detector (L0–L7), the trained ML models, the evaluation harness and this dashboard.</td></tr>
+              <tr><th scope="row"><span class="truth truth-sim">Simulated</span></th>
+                <td>The three feed paths (Direct, SIP, Vendor are split from one real source, each with its own latency profile) and the faults injected from the Chaos Lab.</td></tr>
+              <tr><th scope="row"><span class="truth truth-road">Roadmap</span></th>
+                <td>A native ITCH 5.0 binary decoder, a live Nasdaq Cloud Data Service (NCDS, Kafka) connection, and alerting integrations (paging, chat, ticketing).</td></tr>
+            </tbody>
+          </table>
+          <h2 class="card-h mt">Reading the Monitor</h2>
+          <ul class="plain">
+            <li><b>Feed cards</b>: health 0–100, state (● HEALTHY, ⚠&#xFE0E; DEGRADED, ✖&#xFE0E; CRITICAL), throughput, latency, counters, AI anomaly score against its threshold, and the classifier’s diagnosis.</li>
+            <li><b>Price chart</b>: consensus (thick line) against each feed; vertical lines mark incidents, coloured by severity.</li>
+            <li><b>TTD</b> (time to detect) is measured in market seconds, so it does not depend on replay speed.</li>
+            <li><b>“Real market events”</b> in the Chaos Lab are genuine market behaviour; the right answer is no alert.</li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------ AUDIT (admin) -->
+    <section id="tab-audit" class="view view-doc" role="tabpanel" aria-labelledby="tabbtn-audit" hidden>
+      <div class="doc-head">
+        <h1 class="section-h">Audit log</h1>
+        <span id="audit-result" class="verify-result" aria-live="polite"></span>
+        <div class="spacer"></div>
+        <button id="audit-verify" class="btn btn-primary" type="button">Verify chain</button>
+        <button id="audit-refresh" class="btn btn-secondary" type="button">Refresh</button>
+      </div>
+      <div id="audit-body"><p class="muted">Loading…</p></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span class="foot-title">Detector self-health <span class="muted">(who watches the watchman?)</span></span>
+    <span id="self-status" class="self-status"></span>
+    <span id="self-stats" class="num"></span>
+    <div class="spacer"></div>
+    <span id="models-status" class="muted"></span>
+  </footer>
+</div>
+
+<!-- ================================================================== TRADER -->
+<div id="page-trader" class="page page-trader" hidden>
+  <section class="band" aria-label="Market status">
+    <div class="band-inner">
+      <div class="band-meta"><span class="badge badge-mode">MARKETS</span><span class="source">Prices you can trust, checked against independent feeds</span></div>
+      <div class="band-stats">
+        <div class="stat"><div id="tr-clock" class="stat-num num">--:--:--</div><div class="stat-lbl">Market time · <span id="tr-tz"></span></div></div>
+        <div class="stat"><div id="tr-session" class="stat-num">—</div><div class="stat-lbl">Session · <span id="tr-date">—</span></div></div>
+        <div class="stat"><div id="tr-fresh" class="stat-num num">–</div><div class="stat-lbl">Oldest price age</div></div>
+        <div class="stat"><div id="tr-verified" class="stat-num num">–</div><div class="stat-lbl">Prices verified</div></div>
+      </div>
+    </div>
+  </section>
+  <main class="trader-main">
+    <div class="section-intro">
+      <h1 class="section-h">Your watchlist</h1>
+      <p class="body-lg muted">Each price shows whether you can rely on it right now, and which feed it comes from.</p>
+    </div>
+    <div id="tr-notice" class="card empty-state" hidden>
+      <div class="empty-ic" aria-hidden="true">○</div>
+      <p id="tr-notice-text" class="body-lg m0"></p>
+    </div>
+    <div id="watchlist" class="watchlist"></div>
+    <section class="alerts-block" aria-labelledby="alerts-title">
+      <h2 id="alerts-title" class="sub-h">Alerts</h2>
+      <ol id="tr-alerts" class="alerts"></ol>
+      <p id="tr-alerts-empty" class="muted">No alerts. Your prices are verified.</p>
+    </section>
+  </main>
+</div>
+
+<!-- ================================================================== CHAT -->
+<aside id="chat" class="chat" aria-labelledby="chat-title" hidden>
+  <div class="chat-head">
+    <h2 id="chat-title">Ask FeedSentinel</h2>
+    <button id="chat-close" class="btn btn-text" type="button">Close</button>
+  </div>
+  <div id="chat-msgs" class="chat-msgs" aria-live="polite">
+    <div class="msg msg-bot"><div class="msg-text">Ask about a feed, a symbol or a recent incident. I answer only from data you are allowed to see.</div></div>
+  </div>
+  <div id="chat-suggest" class="chat-suggest"></div>
+  <form id="chat-form" class="chat-form">
+    <label class="sr-only" for="chat-input">Your question</label>
+    <input id="chat-input" autocomplete="off" placeholder="Ask a question…" maxlength="500">
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
+</aside>
+
+<div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+<aside id="drawer" class="drawer" role="dialog" aria-modal="false" aria-labelledby="drawer-title" hidden>
+  <div class="drawer-head">
+    <div class="drawer-kicker"><span id="drawer-id" class="num"></span> · Why?</div>
+    <h2 id="drawer-title">Incident</h2>
+    <button id="drawer-close" class="btn btn-text drawer-close" type="button" aria-label="Close (Esc)">Close</button>
+  </div>
+  <div id="drawer-body" class="drawer-body"></div>
+</aside>
+
+<div id="toasts" class="toasts" aria-live="polite"></div>
+
+<script src="/static/vendor/chart.umd.min.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

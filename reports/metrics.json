@@ -1,0 +1,886 @@
+{
+  "generated_at": "2026-09-26T09:54:52+00:00",
+  "data": {
+    "source": "Nasdaq TotalView-ITCH via LOBSTER \u00b7 21 Jun 2012",
+    "train": "09:45-12:30",
+    "validation": "12:30-13:15",
+    "test": "13:30-16:00"
+  },
+  "clean": {
+    "market_hours": 1.0,
+    "false_alarms": 1,
+    "false_alarms_per_hour": 1.0,
+    "by_feed": {
+      "A": 0,
+      "B": 1,
+      "C": 0
+    },
+    "market_events": 6,
+    "market_event_alerts": 0
+  },
+  "faults": [
+    {
+      "fault": "packet_loss",
+      "label": "Packet loss 5%",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 8.5,
+      "ttd_p95_s": 11.65
+    },
+    {
+      "fault": "delay",
+      "label": "Delay +800 ms",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 2.0,
+      "ttd_p95_s": 2.0
+    },
+    {
+      "fault": "duplicates",
+      "label": "Duplicate storm",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 2.0,
+      "ttd_p95_s": 2.9
+    },
+    {
+      "fault": "conflicting_dups",
+      "label": "Conflicting duplicates",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 5.0,
+      "ttd_p95_s": 7.7
+    },
+    {
+      "fault": "reorder",
+      "label": "Out-of-order",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 1.5,
+      "ttd_p95_s": 1.95
+    },
+    {
+      "fault": "garble",
+      "label": "Garbled payloads",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 1.0,
+      "ttd_p95_s": 1.0
+    },
+    {
+      "fault": "frozen",
+      "label": "Frozen feed",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 3.5,
+      "ttd_p95_s": 4.85
+    },
+    {
+      "fault": "silence",
+      "label": "Silent feed",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 3.0,
+      "ttd_p95_s": 3.9
+    },
+    {
+      "fault": "disconnect",
+      "label": "Disconnect",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 2.0,
+      "ttd_p95_s": 2.0
+    },
+    {
+      "fault": "spike",
+      "label": "Price spikes",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 11.5,
+      "ttd_p95_s": 16.45
+    },
+    {
+      "fault": "decimal_shift",
+      "label": "Decimal shift",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 1.0,
+      "ttd_p95_s": 1.0
+    },
+    {
+      "fault": "drift",
+      "label": "Slow drift",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 7.0,
+      "ttd_p95_s": 8.8
+    },
+    {
+      "fault": "clock_skew",
+      "label": "Clock skew",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 1.0,
+      "ttd_p95_s": 1.0
+    },
+    {
+      "fault": "seq_reset",
+      "label": "Sequence reset",
+      "group": "fault",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 1.0,
+      "ttd_p95_s": 1.0
+    },
+    {
+      "fault": "test_leak_2017",
+      "label": "2017 test-data leak",
+      "group": "incident",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 3.0,
+      "ttd_p95_s": 3.9
+    },
+    {
+      "fault": "reconnect_storm_2013",
+      "label": "2013 reconnect storm",
+      "group": "incident",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 1.0,
+      "ttd_p95_s": 1.0
+    },
+    {
+      "fault": "throttle",
+      "label": "Silent throttling",
+      "group": "novel",
+      "episodes": 2,
+      "detected": 2,
+      "detection_rate": 1.0,
+      "correct_code_rate": 1.0,
+      "ttd_p50_s": 2.0,
+      "ttd_p95_s": 2.0
+    },
+    {
+      "fault": "volume_corrupt",
+      "label": "Volume corruption",
+      "group": "novel",
+      "episodes": 2,
+      "detected": 1,
+      "detection_rate": 0.5,
+      "correct_code_rate": 0.5,
+      "ttd_p50_s": 10.0,
+      "ttd_p95_s": 10.0
+    }
+  ],
+  "incidents": {
+    "total": 50,
+    "matched": 50,
+    "precision": 1.0,
+    "collateral_on_healthy_feeds": 0
+  },
+  "classifier": {
+    "labels": [
+      "CLOCK_SKEW",
+      "CONFLICTING_DUPLICATE",
+      "DECIMAL_SHIFT",
+      "DELAY",
+      "DISCONNECT",
+      "DRIFT",
+      "DUPLICATE",
+      "FROZEN",
+      "GAP",
+      "GARBLED",
+      "NORMAL",
+      "OUT_OF_ORDER",
+      "PRICE_SPIKE",
+      "RATE_STORM",
+      "SEQ_RESET",
+      "STALE",
+      "TEST_DATA_LEAK"
+    ],
+    "confusion": [
+      [
+        60,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        13,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        44,
+        1,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        60,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        58,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        13,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        56,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        45,
+        0,
+        0,
+        0,
+        12,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        51,
+        0,
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        14,
+        0,
+        42,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1,
+        38,
+        18,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        49,
+        0,
+        3,
+        1,
+        2,
+        0,
+        5,
+        12,
+        0,
+        4763,
+        93,
+        362,
+        2,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        33,
+        24,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        44,
+        2,
+        13,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        0,
+        57,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        4,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        55,
+        0
+      ],
+      [
+        0,
+        0,
+        9,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        50
+      ]
+    ],
+    "per_class": [
+      {
+        "label": "CLOCK_SKEW",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 60
+      },
+      {
+        "label": "CONFLICTING_DUPLICATE",
+        "precision": 0.206,
+        "recall": 0.217,
+        "f1": 0.211,
+        "support": 60
+      },
+      {
+        "label": "DECIMAL_SHIFT",
+        "precision": 0.87,
+        "recall": 1.0,
+        "f1": 0.93,
+        "support": 60
+      },
+      {
+        "label": "DELAY",
+        "precision": 0.951,
+        "recall": 0.967,
+        "f1": 0.959,
+        "support": 60
+      },
+      {
+        "label": "DISCONNECT",
+        "precision": 0.65,
+        "recall": 0.812,
+        "f1": 0.722,
+        "support": 16
+      },
+      {
+        "label": "DRIFT",
+        "precision": 0.949,
+        "recall": 0.933,
+        "f1": 0.941,
+        "support": 60
+      },
+      {
+        "label": "DUPLICATE",
+        "precision": 1.0,
+        "recall": 0.75,
+        "f1": 0.857,
+        "support": 60
+      },
+      {
+        "label": "FROZEN",
+        "precision": 0.864,
+        "recall": 0.85,
+        "f1": 0.857,
+        "support": 60
+      },
+      {
+        "label": "GAP",
+        "precision": 0.519,
+        "recall": 0.233,
+        "f1": 0.322,
+        "support": 60
+      },
+      {
+        "label": "GARBLED",
+        "precision": 1.0,
+        "recall": 0.633,
+        "f1": 0.776,
+        "support": 60
+      },
+      {
+        "label": "NORMAL",
+        "precision": 0.958,
+        "recall": 0.9,
+        "f1": 0.928,
+        "support": 5292
+      },
+      {
+        "label": "OUT_OF_ORDER",
+        "precision": 0.194,
+        "recall": 0.4,
+        "f1": 0.261,
+        "support": 60
+      },
+      {
+        "label": "PRICE_SPIKE",
+        "precision": 0.034,
+        "recall": 0.217,
+        "f1": 0.059,
+        "support": 60
+      },
+      {
+        "label": "RATE_STORM",
+        "precision": 0.95,
+        "recall": 0.95,
+        "f1": 0.95,
+        "support": 60
+      },
+      {
+        "label": "SEQ_RESET",
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "support": 2
+      },
+      {
+        "label": "STALE",
+        "precision": 0.932,
+        "recall": 0.917,
+        "f1": 0.924,
+        "support": 60
+      },
+      {
+        "label": "TEST_DATA_LEAK",
+        "precision": 1.0,
+        "recall": 0.833,
+        "f1": 0.909,
+        "support": 60
+      }
+    ],
+    "macro_f1": 0.742,
+    "accuracy": 0.873
+  },
+  "anomaly": {
+    "threshold": 0.6483,
+    "percentile": 99.5,
+    "clean_windows": 13770,
+    "flag_rate_clean": 0.0033
+  },
+  "ablation": {
+    "configs": [
+      "rules",
+      "rules+consensus",
+      "rules+consensus+ml"
+    ],
+    "rows": [
+      {
+        "fault": "packet_loss",
+        "label": "Packet loss 5%",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "delay",
+        "label": "Delay +800 ms",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "duplicates",
+        "label": "Duplicate storm",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "conflicting_dups",
+        "label": "Conflicting duplicates",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "reorder",
+        "label": "Out-of-order",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "garble",
+        "label": "Garbled payloads",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "frozen",
+        "label": "Frozen feed",
+        "rates": [
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "silence",
+        "label": "Silent feed",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "disconnect",
+        "label": "Disconnect",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "spike",
+        "label": "Price spikes",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "decimal_shift",
+        "label": "Decimal shift",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "drift",
+        "label": "Slow drift",
+        "rates": [
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "clock_skew",
+        "label": "Clock skew",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "seq_reset",
+        "label": "Sequence reset",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "test_leak_2017",
+        "label": "2017 test-data leak",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "reconnect_storm_2013",
+        "label": "2013 reconnect storm",
+        "rates": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "throttle",
+        "label": "Silent throttling",
+        "rates": [
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      {
+        "fault": "volume_corrupt",
+        "label": "Volume corruption",
+        "rates": [
+          0.0,
+          0.0,
+          0.5
+        ]
+      }
+    ],
+    "overall": [
+      0.778,
+      0.889,
+      0.972
+    ],
+    "false_alarms_per_hour": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "throughput": {
+    "events_per_s": 9175
+  }
+}
